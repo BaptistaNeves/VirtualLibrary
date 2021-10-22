@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Virtual Library-Login</title>
+    </head>
+    <body id="page-login">
+        
+    <div class ="login-box">
+        <div class="login-logo">
+            <h1>Livraria Virtual</h1>
+        </div>
+
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-msg-box">Faça o login para iniciar sessão</p>
+
+                <form [formGroup]="loginForm" (ngSubmit)="login()">
+                    <div class="form-group alert alert-danger" *ngIf="modelStateErrors">
+                        <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                            <li>{{error}}</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <input 
+                        type="email" 
+                        placeholder="Seu email" 
+                        class="form-control"
+                        formControlName="email">
+                        <div class="text-danger" *ngIf="f.email.errors && f.email.touched">
+                            <div *ngIf="f.email.errors.required">Informe o email!</div>
+                            <div *ngIf="f.email.errors.email">Email inválido!</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <input 
+                        type="password" 
+                        placeholder="Senha" 
+                        class="form-control"
+                        formControlName="password">
+                        <div class="text-danger" *ngIf="f.password.errors && f.password.touched">
+                            <div *ngIf="f.password.errors.required">Informe a Senha!</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex justify-content-end">
+                        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </body>
+</html>

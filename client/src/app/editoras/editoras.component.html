@@ -1,0 +1,197 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-title">
+            <h1>Editoras</h1>
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-4">
+        <div class="card" id="usuarios">
+            <div class="card-header usuarios-cabecalho"></div>
+
+            <div class="row px-3">
+                <div class="col-md-6 my-3">
+                    <button type="button" class="btn btn-secondary" (click)="clicarAdd()" data-bs-toggle="modal" data-bs-target="#AdicionarEditar">
+                        Nova Editora <i class="fa fa-user-plus ml-3"></i>
+                    </button>
+                </div>
+
+                <div class="col-md-6 my-3">
+                    <form class="d-flex ml-auto form-top">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="procurar por ..." aria-label="Procurar por" aria-describedby="basic-addon2">
+                            <button class="btn btn-search "><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive table-responsive-sm">
+                    <table class="table table-hover table-striped table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>País</th>
+                                <th>Cidade</th>
+                                <th>Criada em</th>
+                                <th class="text-center">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let editora of editoras">
+                                <td>{{editora.nome}}</td>
+                                <td>{{editora.pais}}</td>
+                                <td>{{editora.cidade}}</td>
+                                <td>{{editora.dataCadastro | date: 'dd MMM yyyy'}}</td>
+                                <td class="usuarios-btn text-center">
+                                    <a class="btn btn-primary btn-sm" (click)="clicarAtualizar(editora)"  data-bs-toggle="modal" data-bs-target="#AdicionarEditar"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-success btn-sm mx-1" (click)="clicarDetalhes(editora)"  data-bs-toggle="modal" data-bs-target="#Detalhes"><i class="fa fa-sign-out"></i></a>
+                                    <a class="btn btn-danger btn-sm" (click)="clicarRemover(editora)" data-bs-toggle="modal" data-bs-target="#Remover"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para adicionar e editar -->
+
+<div class="modal fade" id="AdicionarEditar" tabindex="-1" aria-labelledby="Adicionar Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="editoraForm" (ngSubmit)="adicionar()">
+
+            <div class="alert alert-danger form-group" *ngIf="modelStateErrors">
+              <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                <li>{{error}}</li>
+              </ul>
+            </div>
+
+              <div class="row">
+                  <div class="form-group col-md-4 text-end">
+                      <label for="descricao">Nome:</label>
+                  </div>
+
+                  <div class="form-group col-md-8">
+                    <input
+                     type="text" 
+                     id ="nome" 
+                     class="form-control"
+                     formControlName ="nome">
+
+                     <div *ngIf="f.nome.errors && f.nome.touched" class="text-danger">
+                      <div *ngIf="f.nome.errors.required">O campo Nome é obrigatório!</div>
+                      <div *ngIf="f.nome.errors.minlength">O campo Nome dever ter no minimo 2 caracteres!</div>
+                     </div>
+                  </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="pais">País:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="pais" 
+                   class="form-control"
+                   formControlName ="pais">
+
+                   <div *ngIf="f.pais.errors && f.pais.touched" class="text-danger">
+                    <div *ngIf="f.pais.errors.required">O campo País é obrigatório!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="cidade">Cidade:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="cidade" 
+                   class="form-control"
+                   formControlName ="cidade">
+
+                   <div *ngIf="f.cidade.errors && f.cidade.touched" class="text-danger">
+                    <div *ngIf="f.cidade.errors.required">O campo Cidade é obrigatório!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-4 text-end">
+                    <label for="descricao">Descrição:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                 <textarea id="descricao" class="form-control" formControlName="descricao" cols="30" rows="2"></textarea>
+
+                   <div *ngIf="f.descricao.errors && f.descricao.touched" class="text-danger">
+                    <div *ngIf="f.descricao.errors.maxlength">O campo Descrição dever ter no máximo 1000 caracteres!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="form-group my-4 text-end">
+                <button type="button" id="modal_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" [disabled]="editoraForm.invalid" class="btn btn-primary ms-2" *ngIf="mostrarBtnAdd">Adicionar</button>
+                <button type="button" [disabled]="editoraForm.invalid"(click)="atualizar()" class="btn btn-primary ms-2" *ngIf="mostrarBtnAtualizar">Atualizar</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal para Detalhes -->
+
+<div class="modal fade" id="Detalhes" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="editora">
+            <div class="custom-header-modal mb-3">
+                <h4>Editora: <strong>{{editora.nome}}</strong></h4>
+            </div>
+
+            <p>País: <em>{{editora.pais}}</em></p>
+            <p>Cidade: <em>{{editora.cidade}}</em></p>
+            <p>Descrição: <em>{{editora.descricao}}</em></p>
+            <p>Criada em: <em>{{editora.dataCadastro | date: 'dd MMM yyyy'}}</em></p>
+            <p>Criada por: <em>{{editora.usuario.userName}}</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--Modal para Remover Autor-->
+<div class="modal fade" id="Remover" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 18px;">Pretende realmente remover esta Editora?</p>
+        </div>
+        <div class="modal-footer text-end">
+            <button type="button" id="eliminar_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+            <button type="button" (click)="remover()" class="btn btn-danger ms-2">Sim</button>
+          </div>
+      </div>
+    </div>
+  </div>

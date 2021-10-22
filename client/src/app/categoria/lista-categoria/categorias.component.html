@@ -1,0 +1,195 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-title">
+            <h1>Categorias</h1>
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-4">
+        <div class="card" id="usuarios">
+            <div class="card-header usuarios-cabecalho"></div>
+
+            <div class="row px-3">
+                <div class="col-md-6 my-3">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#Adicionar">
+                        Nova Categoria <i class="fa fa-user-plus ml-3"></i>
+                    </button>
+                </div>
+
+                <div class="col-md-6 my-3">
+                    <form class="d-flex ml-auto form-top">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="procurar por ..." aria-label="Procurar por" aria-describedby="basic-addon2">
+                            <button class="btn btn-search "><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive table-responsive-sm">
+                    <table class="table table-hover table-striped table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Criada por</th>
+                                <th>Criada em</th>
+                                <th class="text-center">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let categoria of categorias">
+                                <td>{{categoria.descricao}}</td>
+                                <td>{{categoria.usuario.userName}}</td>
+                                <td>{{categoria.dataCadastro | date: 'dd MMM yyyy'}}</td>
+                                <td class="usuarios-btn text-center">
+                                    <a class="btn btn-primary btn-sm" (click)="editar(categoria)" data-bs-toggle="modal" data-bs-target="#Editar"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-success btn-sm mx-1" (click)="detalhes(categoria)" data-bs-toggle="modal" data-bs-target="#Detalhes"><i class="fa fa-sign-out"></i></a>
+                                    <a class="btn btn-danger btn-sm" (click)="confirmaEliminar(categoria)" data-bs-toggle="modal" data-bs-target="#Remover"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para adicionar Categoria -->
+
+<div class="modal fade" id="Adicionar" tabindex="-1" aria-labelledby="Adicionar Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="adicionarForm" (ngSubmit)="adicionar()">
+
+            <div class="alert alert-danger form-group" *ngIf="modelStateErrors">
+              <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                <li>{{error}}</li>
+              </ul>
+            </div>
+
+              <div class="row">
+                  <div class="form-group col-md-4 text-end">
+                      <label for="descricao">Descrição:</label>
+                  </div>
+
+                  <div class="form-group col-md-8">
+                    <input
+                     type="text" 
+                     id ="descricao" 
+                     class="form-control"
+                     formControlName ="descricao">
+
+                     <div *ngIf="f.descricao.errors && f.descricao.touched" class="text-danger">
+                      <div *ngIf="f.descricao.errors.required">O campo descrição é obrigatório!</div>
+                      <div *ngIf="f.descricao.errors.minlength">O campo descrição dever ter no minimo 2 caracteres!</div>
+                     </div>
+                  </div>
+              </div>
+
+              <div class="form-group my-4 text-end">
+                <button type="button" id="add_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" [disabled]="adicionarForm.invalid" class="btn btn-primary ms-2">Adicionar</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+  <!-- Modal para Editar Categoria -->
+
+<div class="modal fade" id="Editar" tabindex="-1" aria-labelledby="Adicionar Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="custom-header-modal mb-5">
+                <h4>Editar categoria <strong></strong></h4>
+            </div>
+            <form [formGroup]="editarForm" (ngSubmit)="atualizar()">
+
+              <div class="alert alert-danger form-group" *ngIf="modelStateErrors">
+                <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                  <li>{{error}}</li>
+                </ul>
+              </div>
+
+              <div class="row">
+                  <div class="form-group col-md-4 text-end">
+                      <label for="descricao">Descrição:</label>
+                  </div>
+
+                  <div class="form-group col-md-8">
+                    <input
+                     type="text" 
+                     id ="descricao" 
+                     class="form-control"
+                     formControlName ="descricao">
+
+                     <div *ngIf="e.descricao.errors && e.descricao.touched" class="text-danger">
+                      <div *ngIf="e.descricao.errors.required">O campo descrição é obrigatório!</div>
+                      <div *ngIf="e.descricao.errors.minlength">O campo descrição dever ter no minimo 2 caracteres!</div>
+                     </div>
+                  </div>
+              </div>
+
+              <div class="form-group my-4 text-end">
+                <button type="button" id="editar_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" [disabled]="editarForm.invalid" class="btn btn-primary ms-2">Atualizar</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Detalhes Categoria -->
+
+<div class="modal fade" id="Detalhes" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="categoria">
+            <div class="custom-header-modal mb-3">
+                <h4>Categoria: <strong>{{categoria.descricao}}</strong></h4>
+            </div>
+
+            <p>Criada em: <em>{{categoria.dataCadastro | date: 'dd MMM yyyy'}}</em></p>
+            <p>Criada por: <em>{{categoria.usuario.userName}}</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Modal para Remover Categoria -->
+
+<div class="modal fade" id="Remover" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 18px;">Pretende realmente remover esta categoria?</p>
+        </div>
+        <div class="modal-footer text-end">
+            <button type="button" id="eliminar_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+            <button type="button" (click)="eliminar()" class="btn btn-danger ms-2">Sim</button>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  
+

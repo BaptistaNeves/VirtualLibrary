@@ -1,0 +1,431 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-title">
+            <h1>Úsuarios</h1>
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-4">
+        <div class="card" id="usuarios">
+            <div class="card-header usuarios-cabecalho"></div>
+
+            <div class="row px-3">
+                <div class="col-md-6 my-3">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#Adicionar">
+                        Novo Usuario <i class="fa fa-user-plus ml-3"></i>
+                    </button>                
+                </div>
+
+                <div class="col-md-6 my-3">
+                    <form class="d-flex ml-auto form-top">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="procurar por ..." aria-label="Procurar por" aria-describedby="basic-addon2">
+                            <button class="btn btn-search "><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive table-responsive-sm">
+                    <table class="table table-hover table-striped table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th>Úsuario</th>
+                                <th class="text-center">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of usuarios">
+                                <td>{{usuario.userName}}</td>
+                                <td>{{usuario.email}}</td>
+                                <td>{{usuario.phoneNumber}}</td>
+                                <td>{{usuario.role}}</td>
+                                <td class="usuarios-btn text-center">
+                                    <a class="btn btn-primary btn-sm" (click)="editar(usuario)" data-bs-toggle="modal" data-bs-target="#Editar"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-success btn-sm mx-1" (click)="detalhes(usuario)" data-bs-toggle="modal" data-bs-target="#Detalhes"><i class="fa fa-sign-out"></i></a>
+                                    <a class="btn btn-danger btn-sm" (click)="confirmaEliminar(usuario)" data-bs-toggle="modal" data-bs-target="#Remover"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para adicionar Usuario -->
+
+<div class="modal fade" id="Adicionar" tabindex="-1" aria-labelledby="Adicionar Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="adicionarForm" (ngSubmit)="adicionar()">
+            
+            <div class="alert alert-danger form-group" *ngIf="modelStateErrors">
+              <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                <li>{{error}}</li>
+              </ul>
+            </div>
+
+              <div class="row">
+                  <div class="form-group col-md-4 text-end">
+                      <label for="descricao">Nome:</label>
+                  </div>
+
+                  <div class="form-group col-md-8">
+                    <input
+                     type="text" 
+                     id ="descricao" 
+                     class="form-control"
+                     formControlName ="userName">
+
+                     <div *ngIf="f.userName.errors && f.userName.touched" class="text-danger">
+                      <div *ngIf="f.userName.errors.required">O campo nome é obrigatório!</div>
+                      <div *ngIf="f.userName.errors.minlength">O campo nome dever ter no minimo 3 caracteres!</div>
+                     </div>
+                  </div>
+              </div>
+
+              <div class="row my-2">
+                <div class="form-group col-md-4 text-end">
+                    <label for="email">Email:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="email" 
+                   id ="email" 
+                   class="form-control"
+                   formControlName ="email">
+
+                   <div *ngIf="f.email.errors && f.email.touched" class="text-danger">
+                    <div *ngIf="f.email.errors.required">O campo nome é obrigatório!</div>
+                    <div *ngIf="f.email.errors.email">Email inválido!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-2">
+                <div class="form-group col-md-4 text-end">
+                    <label for="phoneNumber">Telefone:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="phoneNumber" 
+                   class="form-control"
+                   formControlName ="phoneNumber">
+
+                   <div *ngIf="f.phoneNumber.errors && f.phoneNumber.touched" class="text-danger">
+                    <div *ngIf="f.phoneNumber.errors.required">O campo Telefone é obrigatório!</div>
+                    <div *ngIf="f.phoneNumber.errors.minlength">Número de telefone inválido, deve conter apenas 9 algarismos!</div>
+                    <div *ngIf="f.phoneNumber.errors.maxlength">Número de telefone inválido, deve conter apenas 9 algarismos!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-2">
+                <div class="form-group col-md-4 text-end">
+                    <label for="endereco">Endereço:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="endereco" 
+                   class="form-control"
+                   formControlName ="endereco">
+
+                   <div *ngIf="f.endereco.errors && f.endereco.touched" class="text-danger">
+                    <div *ngIf="f.endereco.errors.required">O campo Endereço é obrigatório!</div>
+                    <div *ngIf="f.endereco.errors.minlength">Endereço deve ter no minimo 5 caracteres!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-2">
+                <div class="form-group col-md-4 text-end">
+                    <label for="usuario">Úsuario:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                   <select class="form-select" id="usuario" formControlName ="role">
+                       <option>Selecione o tipo de usuario</option>
+                       <option *ngFor="let role of roles" [value]="role.name">{{role.name}}</option>
+                   </select>
+
+                   <div *ngIf="f.role.errors && f.role.touched" class="text-danger">
+                    <div *ngIf="f.role.errors.required">Seleccione o tipo de Usuario!</div>
+                   </div>
+                </div>
+              </div>
+
+
+              <div class="row my-2">
+                <div class="form-group col-md-4 text-end">
+                    <label for="password">Senha:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="password" 
+                   id ="password" 
+                   class="form-control"
+                   formControlName ="password">
+
+                   <div *ngIf="f.password.errors && f.password.touched" class="text-danger">
+                    <div *ngIf="f.password.errors.required">O campo Senha é obrigatório!</div>
+                    <div *ngIf="f.password.errors.minlength">Endereço deve ter no minimo 6 caracteres!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="form-group my-4 text-end">
+                <button type="button" id="add_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" [disabled]="adicionarForm.invalid" class="btn btn-primary ms-2">Adicionar</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!--Modal para editar usuario-->
+<div class="modal fade" id="Editar" tabindex="-1" aria-labelledby="Editar Usuario" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="custom-header-modal mb-5">
+                <h4>Editar<strong></strong></h4>
+            </div>
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-geral-tab" data-bs-toggle="tab" data-bs-target="#nav-geral" type="button" role="tab" aria-controls="nav-geral" aria-selected="true">Geral</button>
+                    <button class="nav-link" id="nav-config-tab" data-bs-toggle="tab" data-bs-target="#nav-config" type="button" role="tab" aria-controls="nav-config" aria-selected="false"><i class="fa fa-user-o"></i>  Configurações</button>
+                </div>
+            </nav>
+
+            <div class="alert alert-danger my-3" *ngIf="modelStateErrors">
+              <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                <li>{{error}}</li>
+              </ul>
+            </div>
+
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-geral" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <form [formGroup]="editarForm" (ngSubmit)="atualizarGeral()" class="my-3">
+                        <div class="row">
+                            <div class="form-group col-md-4 text-end">
+                                <label for="nome">Nome:</label>
+                            </div>
+          
+                            <div class="form-group col-md-8">
+                              <input
+                               type="text" 
+                               id ="nome" 
+                               class="form-control"
+                               formControlName ="userName">
+          
+                               <div *ngIf="e.userName.errors && e.userName.touched" class="text-danger">
+                                <div *ngIf="e.userName.errors.required">O campo nome é obrigatório!</div>
+                                <div *ngIf="e.userName.errors.minlength">O campo nome dever ter no minimo 3 caracteres!</div>
+                               </div>
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                          <div class="form-group col-md-4 text-end">
+                              <label for="phoneNumber">Telefone:</label>
+                          </div>
+          
+                          <div class="form-group col-md-8">
+                            <input
+                             type="text" 
+                             id ="phoneNumber" 
+                             class="form-control"
+                             formControlName ="phoneNumber">
+          
+                             <div *ngIf="e.phoneNumber.errors && e.phoneNumber.touched" class="text-danger">
+                              <div *ngIf="e.phoneNumber.errors.required">O campo Telefone é obrigatório!</div>
+                              <div *ngIf="e.phoneNumber.errors.minlength">Número de telefone inválido, deve conter apenas 9 algarismos!</div>
+                              <div *ngIf="e.phoneNumber.errors.maxlength">Número de telefone inválido, deve conter apenas 9 algarismos!</div>
+                             </div>
+                          </div>
+                        </div>
+          
+                        <div class="row my-2">
+                          <div class="form-group col-md-4 text-end">
+                              <label for="endereco">Endereço:</label>
+                          </div>
+          
+                          <div class="form-group col-md-8">
+                            <input
+                             type="text" 
+                             id ="endereco" 
+                             class="form-control"
+                             formControlName ="endereco">
+          
+                             <div *ngIf="e.endereco.errors && e.endereco.touched" class="text-danger">
+                              <div *ngIf="e.endereco.errors.required">O campo Endereço é obrigatório!</div>
+                              <div *ngIf="e.endereco.errors.minlength">Endereço deve ter no minimo 5 caracteres!</div>
+                             </div>
+                          </div>
+                        </div>
+          
+                        <div class="row my-2">
+                          <div class="form-group col-md-4 text-end">
+                              <label for="usuario">Úsuario:</label>
+                          </div>
+          
+                          <div class="form-group col-md-8">
+                             <select class="form-select" id="usuario" formControlName ="role">
+                                 <option>Selecione o tipo de usuario</option>
+                                 <option *ngFor="let role of roles" [value]="role.name">{{role.name}}</option>
+                             </select>
+          
+                             <div *ngIf="e.role.errors && f.role.touched" class="text-danger">
+                              <div *ngIf="e.role.errors.required">Seleccione o tipo de Usuario!</div>
+                             </div>
+                          </div>
+                        </div>
+          
+                        <div class="form-group my-4 text-end">
+                          <button type="button" id="editGeral_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button type="submit" [disabled]="editarForm.invalid" class="btn btn-primary ms-2">Atualizar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <form [formGroup]="editarConfForm" (ngSubmit)="actualizarConfig()" class="my-3">
+                        <div class="row">
+                            <div class="form-group col-md-4 text-end">
+                                <label for="email">Email:</label>
+                            </div>
+          
+                            <div class="form-group col-md-8">
+                              <input
+                               type="email" 
+                               id ="email" 
+                               class="form-control"
+                               formControlName ="email">
+          
+                               <div *ngIf="ec.email.errors && ec.email.touched" class="text-danger">
+                                <div *ngIf="ec.email.errors.required">O campo email é obrigatório!</div>
+                                <div *ngIf="ec.email.errors.email">Email inválido!</div>
+                               </div>
+                            </div>
+                        </div>
+
+                        <div class="row my-2">
+                          <div class="form-group col-md-4 text-end">
+                              <label for="currentPassword">Senha actual:</label>
+                          </div>
+          
+                          <div class="form-group col-md-8">
+                            <input
+                             type="password" 
+                             id ="currentPassword" 
+                             class="form-control"
+                             formControlName ="currentPassword">
+          
+                             <div *ngIf="ec.currentPassword.errors && ec.currentPassword.touched" class="text-danger">
+                              <div *ngIf="ec.currentPassword.errors.required">O campo Senha actual é obrigatório!</div>
+                              <div *ngIf="ec.currentPassword.errors.minlength">A senha deve ter no minimo 6 caracteres!</div>
+                             </div>
+                          </div>
+                        </div>
+
+                        <div class="row my-2">
+                          <div class="form-group col-md-4 text-end">
+                              <label for="password">Senha nova:</label>
+                          </div>
+          
+                          <div class="form-group col-md-8">
+                            <input
+                             type="password" 
+                             id ="endereco" 
+                             class="form-control"
+                             formControlName ="password">
+          
+                             <div *ngIf="ec.password.errors && ec.password.touched" class="text-danger">
+                              <div *ngIf="ec.password.errors.required">O campo Senha nova é obrigatório!</div>
+                              <div *ngIf="ec.password.errors.minlength">A senha deve ter no minimo 6 caracteres!</div>
+                             </div>
+                          </div>
+                        </div>
+          
+                        <div class="form-group my-4 text-end">
+                          <button type="button" id="editConf_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button type="submit" [disabled]="editarConfForm.invalid" class="btn btn-primary ms-2">Alterar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Detalhes Categoria -->
+
+<div class="modal fade" id="Detalhes" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="usuario">
+            <div class="row">
+                <div class="col-md-4">
+                    <p>Nome:</p>
+                    <p>Email:</p>
+                    <p>Telefone:</p>
+                    <p>Endereço:</p>
+                    <p>Úsuario:</p>
+                </div>
+
+                <div class="col-md-8">
+                    <p><strong>{{usuario.userName}}</strong></p>
+                    <p><strong>{{usuario.email}}</strong></p>
+                    <p><strong>{{usuario.phoneNumber}}</strong></p>
+                    <p><strong>{{usuario.endereco}}</strong></p>
+                    <p><strong>{{usuario.role}}</strong></p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal para Remover Usuario -->
+<div class="modal fade" id="Remover" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 18px;">Pretende realmente remover este Úsuario?</p>
+        </div>
+        <div class="modal-footer text-end">
+            <button type="button" id="eliminar_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+            <button type="button" (click)="eliminar()" class="btn btn-danger ms-2">Sim</button>
+          </div>
+      </div>
+    </div>
+  </div>
+  

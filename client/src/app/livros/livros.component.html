@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-title">
+            <h1>Livros</h1>
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-4">
+        <div class="card" id="usuarios">
+            <div class="card-header usuarios-cabecalho"></div>
+
+            <div class="row px-3">
+                <div class="col-md-2 my-3">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#Adicionar">
+                        Novo Livro <i class="fa fa-plus ml-3"></i>
+                    </button>
+                </div>
+
+                <div class="col-md-4 my-3">
+                    <select name="buscarPorCategoria" class="form-select">
+                        <option selected disabled>Listar por categoria</option>
+                        <option *ngFor="let categoria of categorias" (change)="listarPorCategoriaId(categoria.id)">{{categoria.descricao}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 my-3">
+                    <form class="d-flex ml-auto form-top">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="procurar por ..." aria-label="Procurar por" aria-describedby="basic-addon2">
+                            <button class="btn btn-search "><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-body col-md-12 card-livros my-3">
+                <div class="row" *ngFor="let livro of livros">
+                    <div class="col-md-4">
+                        <div class="card shadow">
+                            <img src="/assets/img/user.png" alt="" class="card-img-top">
+                            
+                            <div class="card-body">
+                                <h5 class="card-title"> <a routerLink="/livro/{livro.id}">{{livro.titulo}}</a></h5>
+                                <p class="card-text">{{livro.categoria.descricao}}</p>
+                                <p class="card-text">{{livro.autor.nome}}</p>
+                                <p class="card-text">{{livro.editor.nome}}</p>
+                            </div>
+
+                            <div *ngIf="livro.estado" class="card-footer bg-success p-0">
+                                <p>Activo</p>
+                            </div>
+
+                            <div *ngIf="livro.estado == false" class="card-footer bg-danger p-0">
+                                <p>Desactivado</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para adicionar Livro -->
+
+<div class="modal fade" id="Adicionar" tabindex="-1" aria-labelledby="Adicionar Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="livroForm" (ngSubmit)="adicionar()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="titulo">Titulo:</label>
+                            <input type="text" class="form-control" formControlName="titulo">
+
+                            <div class="text-danger" *ngIf="f.titulo.errors && f.titulo.touch">
+                                <div *ngIf="f.titulo.errors.required">Informe o Titulo do livro</div>
+                                <div *ngIf="f.titulo.errors.minlength">O titulo deve ter no minimo 4 caracteres!</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="titulo">Imagem:</label>
+                            <input type="file" class="form-file" formControlName="livroImagem">
+
+                            <div class="text-danger" *ngIf="f.livroImagem.errors && f.livroImagem.touch">
+                                <div *ngIf="f.livroImagem.errors.required">Insira uma imagem do livro</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="titulo">Decrição:</label>
+                            <textarea name="descricao" id="descricao" cols="30" rows="2" class="form-control" formControlName="descricao"></textarea>
+
+                            <div class="text-danger" *ngIf="f.descricao.errors && f.descricao.touch">
+                                <div *ngIf="f.descricao.errors.required">O campo descrição deve ter no máximo 1000 caracteres</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group my-4 text-end">
+                            <button type="button" id="add_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="submit" [disabled]="livroForm.invalid" class="btn btn-primary ms-2">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="titulo">Categoria:</label>
+                            <select name="categoria" class="form-select" formControlName="categoriaId">
+                                <option selected disabled>Selecione a categoria</option>
+                                <option [ngValue]="">Contabilidade</option>
+                            </select>
+
+                            <div class="text-danger" *ngIf="f.categoriaId.errors && f.categoriaId.touch">
+                                <div *ngIf="f.categoriaId.errors.required">Selecione a Categoria!</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="titulo">Fornecedor:</label>
+                            <select name="fornecedor" class="form-select" formControlName="fornecedorId">
+                                <option selected disabled>Selecione o Fornecedor</option>
+                                <option [ngValue]="">Contabilidade</option>
+                            </select>
+
+                            <div class="text-danger" *ngIf="f.fornecedorId.errors && f.fornecedorId.touch">
+                                <div *ngIf="f.fornecedorId.errors.required">Selecione o Fornecedor!</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group my-3">
+                            <label for="titulo">Autor:</label>
+                            <select name="autor" class="form-select" formControlName="autorId">
+                                <option selected disabled>Selecione o autor</option>
+                                <option [ngValue]="">Contabilidade</option>
+                            </select>
+
+                            <div class="text-danger" *ngIf="f.autorId.errors && f.autorId.touch">
+                                <div *ngIf="f.autorId.errors.required">Selecione o Autor!</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="titulo">Editor:</label>
+                            <select name="editor" class="form-select" formControlName="editorId">
+                                <option selected disabled>Selecione o editor</option>
+                                <option [ngValue]="">Contabilidade</option>
+                            </select>
+
+                            <div class="text-danger" *ngIf="f.editorId.errors && f.editorId.touch">
+                                <div *ngIf="f.editorId.errors.required">Selecione o Editor!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+</div>

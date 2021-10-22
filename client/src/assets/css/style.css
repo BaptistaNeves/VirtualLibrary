@@ -1,0 +1,434 @@
+
+:root {
+    --offcanvas-width: 270px;
+    --topNavbarHeigth: 68px;
+    --sideBarColor: #313a46;
+}
+
+body {
+    color: #6c757d;
+    background-color: #f5f5f5;
+    background: #f1f3fa ;
+}
+
+*{padding: 0; margin: 0; box-sizing: border-box;}
+
+a{cursor:pointer}
+
+.bg-sidebar {
+    background-color: var(--sideBarColor);
+}
+
+.bg-navbar {
+    background-color: #fff;
+    box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+}
+
+.btn-search {
+    background-color: #727cf5 ;
+    color: #fff !important;
+}
+
+.btn-search:hover {
+    background-color: #404bc7 ;
+    color: #fff !important;
+}
+
+.sidebar-nav .nav-link {
+    color: #8391a2 !important;
+}
+
+.sidebar-nav .nav-link:hover {
+    color: #727cf5 !important;
+}
+
+.sidebar-nav .text-muted {
+    color: #8391a2 !important;
+}
+
+.brand span {
+    color: #727cf5 !important;
+}
+
+.brand {
+    color: #fff !important;
+}
+
+.sidebar-nav {
+    width: var(--offcanvas-width);
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-link .rigth-icon {
+    display: inline-flex;
+    position: absolute;
+    right: 10px;
+    transition: all ease 0.25s;
+}
+
+.sidebar-link[aria-expanded="true"] .rigth-icon {
+    transform: rotate(180deg);
+}
+
+.user-drp {
+    align-items: center;
+}
+
+.user-name {
+    padding-left: 10px;
+}
+
+.user-name a {
+    text-decoration: none;
+    color: #98a6ad;
+    font-weight: 600;
+}
+
+.user-name a:hover {
+    color: #727cf5;
+}
+
+.user-top_dpr .dropdown-menu {
+    background-color: #fff;
+    box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
+    border: 1px solid #98a6ad;
+}
+
+.user-top_dpr .dropdown-item {
+    color: #6c757d;
+}
+
+.navbar-dark .navbar-toggler-icon {
+    border-radius: 4px;
+    background-color: #727cf5 !important;
+    color: #fff !important;
+}
+
+.show-menu-icon {
+    color: #8391a2 !important;
+    padding: 5px;
+}
+
+.navbar-nav .nav-link {
+    font-size: 16px;
+}
+
+.navbar-nav .nav-link .fa {
+    margin-right: 7px;
+}
+
+.navbar-nav .small {
+    font-size: 12px;
+}
+
+.show-menu-icon .fa {
+    font-size: 30px !important;
+}
+
+.form-top .form-control {
+    background-color: #f5f5f5 !important;
+    border: none;
+}
+
+.form-top .form-control:focus {
+   box-shadow: none;
+   border: none;
+}
+
+.content-title h1{
+    font-size: 30px;
+}
+
+#alugados {
+    background-color: #17a2b8 !important;
+}
+
+#disponiveis {
+    background-color: #28a745 !important;
+}
+
+#vencidos {
+    background-color: #dc3545 !important;
+}
+
+#novoEmprestimo {
+    background-color: #ffc107 !important;
+}
+
+#novoEmprestimo .card-body {
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#novoEmprestimo .card-body a {
+    transition: transform .3s linear;
+}
+
+#novoEmprestimo .card-body a:hover {
+    transition: transform .3s linear;
+    transform: scale(1.1);
+}
+
+#novoEmprestimo .card-body .fa {
+    margin-left: 5px;
+    font-size: 75px;
+    color: rgba(0,0,0,.15);
+}
+
+
+.content-wrapper .card {
+    box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
+}
+
+.content-wrapper .card-body {
+    padding: 5px 10px !important;
+}
+
+.content-wrapper .card h4 {
+    font-weight: 700;
+    font-size: 50px;
+    color: #fff;
+}
+
+.content-wrapper .card p {
+    color: #fff;
+}
+
+.content-wrapper .card-footer {
+   padding: 0 !important;
+}
+
+.content-wrapper .card-footer a {
+    background-color: rgba(0,0,0,.1);
+    text-decoration: none;
+    color: #fff !important;
+    display: block;
+    text-align: center;
+    padding: 5px 0px;
+}
+
+#novoEmprestimo .card-body p{
+    color: #1f2d3d;
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .navbar-top {
+        height: 70px;
+    }
+
+    .navbar-top {
+        margin-left: var(--offcanvas-width);
+    }
+
+    main {
+        margin-left: var(--offcanvas-width);
+    }
+
+    .offcanvas-backdrop::before {
+        display: none !important;
+    }
+
+    .sidebar-nav {
+        transform: none;
+        visibility: visible !important;
+        height: 100%;
+    }
+}
+
+/*Livros */
+.lista-items {
+    display: flex;
+    flex-direction: row;
+}
+
+.lista-items button {
+    padding: .375rem .75rem;
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8;
+}
+
+.lista-livros-cabecalho {
+    background-color: #007bff;
+    padding: 10px;
+}
+
+.lista-items button:hover {
+    background-color: #107c8d !important;
+    border-color: #107c8d;
+}
+
+/*LIVROS*/
+.livros-listados .card {
+    box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
+}
+
+.livros-listados .card-title a {
+    padding: 2px 4px;
+    text-decoration: none;
+    text-align: center;
+    color: #727cf5;
+}
+
+
+.livros-listados .card-title a:hover {
+    color: rgb(15, 15, 15);
+    transition: ease-in;
+}
+
+.card-autor {
+    color: #6c757d !important;
+    text-align: center;
+}
+
+.card-preco {
+    font-weight: 700;
+    text-align: center;
+    color: #07090c;
+}
+
+.card-disponibilidade {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 3px 5px;
+    margin-top: 5px;
+}
+
+.card-img-custom {
+    transform: none;
+    transition: .2s ease-out;
+}
+
+.card-img-custom:hover {
+    transform: scale(1.035);
+    transition: .2s ease-in;
+}
+
+@media (max-width: 504px) {
+    .lista-items .btn {
+        margin-top: 3px;
+    }
+}
+
+/*Úsuarios*/
+.usuarios-cabecalho {
+    background-color: #007bff;
+    padding: 15px;
+}
+
+.form-search-user {
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+
+@media (max-width: 750px) {
+   
+    .usuarios-btn{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+
+}
+
+.custom-header-modal h4{
+    color: #6c757d;
+    font-size: 20px;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.bg-table-header {
+    background-color: #e3e5fd;
+    color: #1f2d3d;
+}
+
+/*LOGIN*/
+#page-login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e9ecef;
+    height: 100vh;
+}
+
+.login-box {
+    width: 360px;
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: .9rem;
+}
+
+.login-logo h1 {
+    color: #495057;
+    font-size: 2.3rem;
+    font-weight: 300;
+}
+
+.login-box .card {
+    box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
+}
+
+.login-card-body {
+    background-color: #fff;
+    border-top: 0;
+    color: #666;
+    padding: 20px;
+}
+
+.login-msg-box {
+    margin: 0;
+    padding: 0 20px 20px;
+    text-align: center;
+}
+
+.card-livros .card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+}
+
+.card-livros .card-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.card-livros .card-img-top {
+    border-radius: 10px 10px 0px 0px;
+    max-height: 35vh;
+    object-fit: cover;
+}
+
+.card-livros .card-body h5 a{
+    text-decoration: none;
+    color: #000;
+}
+
+.card-livros .card-body h5 a:hover{
+    color: #404bc7;
+}
+
+.card-livros .card-footer {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    height: 5vh;
+    border-radius: 0px 0px 10px 10px;
+    border: none;
+}
+

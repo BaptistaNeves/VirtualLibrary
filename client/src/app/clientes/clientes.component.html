@@ -1,0 +1,263 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-title">
+            <h1>Clientes</h1>
+        </div>
+    </div>
+
+    <div class="col-md-12 mt-4">
+        <div class="card" id="usuarios">
+            <div class="card-header usuarios-cabecalho"></div>
+
+            <div class="row px-3">
+                <div class="col-md-6 my-3">
+                    <button type="button" class="btn btn-secondary" (click)="clickAdicionar()" data-bs-toggle="modal" data-bs-target="#AdicionarEditar">
+                        Novo Cliente <i class="fa fa-user-plus ml-3"></i>
+                    </button>
+                </div>
+
+                <div class="col-md-6 my-3">
+                    <form class="d-flex ml-auto form-top">
+                        <div class="input-group w-100">
+                            <input type="text" class="form-control" placeholder="procurar por ..." aria-label="Procurar por" aria-describedby="basic-addon2">
+                            <button class="btn btn-search "><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive table-responsive-sm">
+                    <table class="table table-hover table-striped table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th class="text-center">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cliente of clientes">
+                                <td>{{cliente.nome}}</td>
+                                <td>{{cliente.email}}</td>
+                                <td>{{cliente.telefone}}</td>
+                                <td class="usuarios-btn text-center">
+                                    <a class="btn btn-primary btn-sm" (click)="clickAtualizar(cliente)" data-bs-toggle="modal" data-bs-target="#AdicionarEditar"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-success btn-sm mx-1" (click)="clickDetalhes(cliente)" data-bs-toggle="modal" data-bs-target="#Detalhes"><i class="fa fa-sign-out"></i></a>
+                                    <a class="btn btn-danger btn-sm" (click)="clickRemover(cliente)" data-bs-toggle="modal" data-bs-target="#Remover"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para adicionar e editar -->
+
+<div class="modal fade" id="AdicionarEditar" tabindex="-1" aria-labelledby="Adicionar Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="clienteForm" (ngSubmit)="adicionar()">
+
+            <div class="alert alert-danger form-group" *ngIf="modelStateErrors">
+              <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                <li>{{error}}</li>
+              </ul>
+            </div>
+
+              <div class="row">
+                  <div class="form-group col-md-4 text-end">
+                      <label for="descricao">Nome:</label>
+                  </div>
+
+                  <div class="form-group col-md-8">
+                    <input
+                     type="text" 
+                     id ="nome" 
+                     class="form-control"
+                     formControlName ="nome">
+
+                     <div *ngIf="f.nome.errors && f.nome.touched" class="text-danger">
+                      <div *ngIf="f.nome.errors.required">O campo Nome é obrigatório!</div>
+                      <div *ngIf="f.nome.errors.minlength">O campo Nome dever ter no minimo 2 caracteres!</div>
+                     </div>
+                  </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="email">Email:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="mail" 
+                   id ="email" 
+                   class="form-control"
+                   formControlName ="email">
+
+                   <div *ngIf="f.email.errors && f.email.touched" class="text-danger">
+                    <div *ngIf="f.email.errors.required">O campo Email é obrigatório!</div>
+                    <div *ngIf="f.email.errors.email">Email Inválido!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="telefone">Telefone:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="telefone" 
+                   class="form-control"
+                   formControlName ="telefone">
+
+                   <div *ngIf="f.telefone.errors && f.telefone.touched" class="text-danger">
+                    <div *ngIf="f.telefone.errors.required">O campo Telefone é obrigatório!</div>
+                    <div *ngIf="f.telefone.errors.minlength">Número de telefone Inválido!</div>
+                    <div *ngIf="f.telefone.errors.maxlength">Número de telefone Inválido!</div>
+                   </div>
+                </div>
+              </div>
+            
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="endereco">Endereço:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="endereco" 
+                   class="form-control"
+                   formControlName ="endereco">
+
+                   <div *ngIf="f.endereco.errors && f.endereco.touched" class="text-danger">
+                    <div *ngIf="f.endereco.errors.required">O campo Endereço é obrigatório!</div>
+                   </div>
+                </div>
+              </div>
+            
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="endereco">Documento:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                    <select name="tipoDocumento" id="tipoDocumento" class="form-control" formControlName ="tipoDocumento">
+                        <option>Selecione o Documento</option>
+                        <option value="BI">Bilhete de Identidade</option>
+                        <option value="Passaporte">Passaporte</option>
+                    </select>
+
+                   <div *ngIf="f.tipoDocumento.errors && f.tipoDocumento.touched" class="text-danger">
+                    <div *ngIf="f.tipoDocumento.errors.required">Seleccione o Documento!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="endereco">Nº Documento:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="numeroDocumento" 
+                   class="form-control"
+                   formControlName ="numeroDocumento">
+
+                   <div *ngIf="f.numeroDocumento.errors && f.numeroDocumento.touched" class="text-danger">
+                    <div *ngIf="f.numeroDocumento.errors.required">Informe o nº do documento!</div>
+                    <div *ngIf="f.numeroDocumento.errors.minlength">Nº de documento inválido!</div>
+                    <div *ngIf="f.numeroDocumento.errors.maxlength">Nº de documento inválido!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="row my-3">
+                <div class="form-group col-md-4 text-end">
+                    <label for="dataNascimento">Data de Nascimento:</label>
+                </div>
+
+                <div class="form-group col-md-8">
+                  <input
+                   type="text" 
+                   id ="dataNascimento" 
+                   class="form-control"
+                   formControlName ="dataNascimento"
+                   bsDatepicker
+                   [bsConfig]="{isAnimated:true, dateInputFormat: 'YYYY/MM/DD'}">
+
+                   <div *ngIf="f.dataNascimento.errors && f.dataNascimento.touched" class="text-danger">
+                    <div *ngIf="f.dataNascimento.errors.required">Informe a data de Nascimento!</div>
+                   </div>
+                </div>
+              </div>
+
+              <div class="form-group my-4 text-end">
+                <button type="button" id="modal_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" [disabled]="clienteForm.invalid" class="btn btn-primary ms-2" *ngIf="btnAdicionar">Adicionar</button>
+                <button type="button" [disabled]="clienteForm.invalid" (click)="atualizar()" class="btn btn-primary ms-2" *ngIf="btnAtualizar">Atualizar</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal para Detalhes -->
+
+<div class="modal fade" id="Detalhes" tabindex="-1" aria-labelledby="Detalhes Categoria" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="cliente">
+            <div class="custom-header-modal mb-3">
+                <h4>Cliente: <strong>{{cliente.nome}}</strong></h4>
+            </div>
+
+            <p>Email: <em>{{cliente.email}}</em></p>
+            <p>Telefone: <em>{{cliente.telefone}}</em></p>
+            <p>Endereço: <em>{{cliente.endereco}}</em></p>
+            <p>Tipo de Documento: <em>{{cliente.tipoDocumento}}</em></p>
+            <p>Nº Documento: <em>{{cliente.numeroDocumento}}</em></p>
+            <p>idade: <em>{{cliente.idade}}</em></p>
+            <p>Criado em: <em>{{cliente.dataCadastro | date: 'dd MMM yyyy'}}</em></p>
+            <p>Criado por: <em>{{cliente.usuario.userName}}</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--Modal para Remover Autor-->
+<div class="modal fade" id="Remover" tabindex="-1" aria-labelledby="Remover Fornecedor" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 18px;">Pretende realmente remover este Cliente?</p>
+        </div>
+        <div class="modal-footer text-end">
+            <button type="button" id="eliminar_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+            <button type="button" (click)="remover()" class="btn btn-danger ms-2">Sim</button>
+          </div>
+      </div>
+    </div>
+  </div>
