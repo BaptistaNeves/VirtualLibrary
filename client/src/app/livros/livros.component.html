@@ -43,7 +43,7 @@
                                 <h5 class="card-title"> <a routerLink="/livro/{livro.id}">{{livro.titulo}}</a></h5>
                                 <p class="card-text">{{livro.categoria.descricao}}</p>
                                 <p class="card-text">{{livro.autor.nome}}</p>
-                                <p class="card-text">{{livro.editor.nome}}</p>
+                                <p class="card-text">{{livro.editora.nome}}</p>
                             </div>
 
                             <div *ngIf="livro.estado" class="card-footer bg-success p-0">
@@ -71,14 +71,20 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="livroForm" (ngSubmit)="adicionar()">
+            <form [formGroup]="livroForm" (ngSubmit)="adicionarForm()">
+                <div class="alert alert-danger form-group" *ngIf="modelStateErrors">
+                    <ul *ngFor="let error of modelStateErrors" style="list-style: none;">
+                        <li>{{error}}</li>
+                    </ul>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="titulo">Titulo:</label>
                             <input type="text" class="form-control" formControlName="titulo">
 
-                            <div class="text-danger" *ngIf="f.titulo.errors && f.titulo.touch">
+                            <div class="text-danger" *ngIf="f.titulo.errors && f.titulo.touched">
                                 <div *ngIf="f.titulo.errors.required">Informe o Titulo do livro</div>
                                 <div *ngIf="f.titulo.errors.minlength">O titulo deve ter no minimo 4 caracteres!</div>
                             </div>
@@ -86,24 +92,28 @@
 
                         <div class="form-group my-3">
                             <label for="titulo">Imagem:</label>
-                            <input type="file" class="form-file" formControlName="livroImagem">
+                            <input 
+                            type="file" 
+                            class="form-file" 
+                            (change)="onFileChanges($event)"
+                            >
 
-                            <div class="text-danger" *ngIf="f.livroImagem.errors && f.livroImagem.touch">
-                                <div *ngIf="f.livroImagem.errors.required">Insira uma imagem do livro</div>
+                            <div class="text-danger" *ngIf="f.imagemLivro.errors && f.imagemLivro.touched">
+                                <div *ngIf="f.imagemLivro.errors.required">Insira uma imagem do livro</div>
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="titulo">Decrição:</label>
                             <textarea name="descricao" id="descricao" cols="30" rows="2" class="form-control" formControlName="descricao"></textarea>
 
-                            <div class="text-danger" *ngIf="f.descricao.errors && f.descricao.touch">
+                            <div class="text-danger" *ngIf="f.descricao.errors && f.descricao.touched">
                                 <div *ngIf="f.descricao.errors.required">O campo descrição deve ter no máximo 1000 caracteres</div>
                             </div>
                         </div>
 
                         <div class="form-group my-4 text-end">
-                            <button type="button" id="add_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button type="button" (click)="limparCampos()" id="add_fechar" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" [disabled]="livroForm.invalid" class="btn btn-primary ms-2">Adicionar</button>
                         </div>
                     </div>
@@ -113,10 +123,10 @@
                             <label for="titulo">Categoria:</label>
                             <select name="categoria" class="form-select" formControlName="categoriaId">
                                 <option selected disabled>Selecione a categoria</option>
-                                <option [ngValue]="">Contabilidade</option>
+                                <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">{{categoria.descricao}}</option>
                             </select>
 
-                            <div class="text-danger" *ngIf="f.categoriaId.errors && f.categoriaId.touch">
+                            <div class="text-danger" *ngIf="f.categoriaId.errors && f.categoriaId.touched">
                                 <div *ngIf="f.categoriaId.errors.required">Selecione a Categoria!</div>
                             </div>
                         </div>
@@ -125,10 +135,10 @@
                             <label for="titulo">Fornecedor:</label>
                             <select name="fornecedor" class="form-select" formControlName="fornecedorId">
                                 <option selected disabled>Selecione o Fornecedor</option>
-                                <option [ngValue]="">Contabilidade</option>
+                                <option *ngFor="let fornecedor of fornecedores" [ngValue]="fornecedor.id">{{fornecedor.nome}}</option>
                             </select>
 
-                            <div class="text-danger" *ngIf="f.fornecedorId.errors && f.fornecedorId.touch">
+                            <div class="text-danger" *ngIf="f.fornecedorId.errors && f.fornecedorId.touched">
                                 <div *ngIf="f.fornecedorId.errors.required">Selecione o Fornecedor!</div>
                             </div>
                         </div>
@@ -137,23 +147,23 @@
                             <label for="titulo">Autor:</label>
                             <select name="autor" class="form-select" formControlName="autorId">
                                 <option selected disabled>Selecione o autor</option>
-                                <option [ngValue]="">Contabilidade</option>
+                                <option *ngFor="let autor of autores" [ngValue]="autor.id">{{autor.nome}}</option>
                             </select>
 
-                            <div class="text-danger" *ngIf="f.autorId.errors && f.autorId.touch">
+                            <div class="text-danger" *ngIf="f.autorId.errors && f.autorId.touched">
                                 <div *ngIf="f.autorId.errors.required">Selecione o Autor!</div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="titulo">Editor:</label>
-                            <select name="editor" class="form-select" formControlName="editorId">
+                            <label for="titulo">Editora:</label>
+                            <select name="editor" class="form-select" formControlName="editoraId">
                                 <option selected disabled>Selecione o editor</option>
-                                <option [ngValue]="">Contabilidade</option>
+                                <option *ngFor="let editora of editoras" [ngValue]="editora.id">{{editora.nome}}</option>
                             </select>
 
-                            <div class="text-danger" *ngIf="f.editorId.errors && f.editorId.touch">
-                                <div *ngIf="f.editorId.errors.required">Selecione o Editor!</div>
+                            <div class="text-danger" *ngIf="f.editoraId.errors && f.editoraId.touched">
+                                <div *ngIf="f.editoraId.errors.required">Selecione o Editor!</div>
                             </div>
                         </div>
                     </div>

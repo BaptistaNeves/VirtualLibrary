@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Livro } from 'src/app/_models/produto/livro';
 import { environment } from 'src/environments/environment';
@@ -23,7 +23,7 @@ export class LivroService {
       return this.http.get<Livro>(this.baseUr + "livros/" + id);
   }
 
-  adicionar(model: Livro) {
+  adicionar(model: any) {
       return this.http.post<Livro>(this.baseUr + "livros", model);
   }
 
@@ -33,6 +33,14 @@ export class LivroService {
 
   remover(id: string) {
       return this.http.delete<Livro>(this.baseUr + "livros/" + id);
+  }
+
+  protected obterHeaders() {
+      return {
+          headers: new HttpHeaders({
+              "Content-Disposition": 'form-data, name="livro"'
+          })
+      };
   }
 
 }

@@ -15,7 +15,7 @@ using VirtualLibrary.Domain.Models;
 
 namespace VirtualLibrary.Api.Controllers
 {
-    [Authorize(Roles="Moderador,Admin")]
+    // [Authorize(Roles="Moderador,Admin")]
     [Route("api/[controller]")]
     public class LivrosController : MainController
     {
@@ -148,6 +148,30 @@ namespace VirtualLibrary.Api.Controllers
                 await arquivo.CopyToAsync(stream); //Cópia o conteúdo do arquivo enviado para o caminho apontado pelo stream
             }
 
+            return true;
+        }
+
+        [NonAction]
+        private bool UploadArquivo(string arquivo, string imgNome)
+        {
+
+            if(string.IsNullOrEmpty(arquivo))
+            {
+                NotificarErro("Forneça uma imagem para este produto!");
+                return false;
+            }
+
+            var imageDataByteArray = Convert.FromBase64String(arquivo);
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imgNome);
+
+            if(System.IO.File.Exists(filePath))
+            {
+                NotificarErro("Já Existe um arquivo com este nome!");
+                return false;
+            }
+
+            System.IO.File.WriteAllBytes(filePath, imageDataByteArray);
             return true;
         }
 

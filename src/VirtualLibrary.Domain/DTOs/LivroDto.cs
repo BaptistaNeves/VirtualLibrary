@@ -29,8 +29,6 @@ namespace VirtualLibrary.Domain.DTOs
         public string Titulo { get; set; }
 
         public IFormFile ImagemLivro { get; set; }
-
-        [Required(ErrorMessage = "Insira uma imagem!")]
         public string Imagem { get; set; }
 
         [StringLength(1000, ErrorMessage = "O campo {0} deve ter no máximo {1} caracteres!")]

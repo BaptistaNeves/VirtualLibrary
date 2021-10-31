@@ -28,6 +28,8 @@ namespace VirtualLibrary.Api.Configurations
 
             CreateMap<Autor, AutorDto>().ReverseMap();
             CreateMap<Usuario, UsuarioDto>().ReverseMap();
+
+            CreateMap<Livro, LivroDto>().ReverseMap();
         }
     }
 }

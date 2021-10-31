@@ -8,7 +8,7 @@ export interface Livro {
     id: string;
     titulo: string;
     imagem: string;
-    livroImagem: string;
+    imagemLivro: FormData;
     descricao: string;
     categoriaId: string;
     autorId: string;
